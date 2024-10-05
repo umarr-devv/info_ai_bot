@@ -16,7 +16,7 @@ class AiApiClient:
             messages=[
                 {
                     'role': 'system',
-                    'content': system_propmt
+                    'content': system_prompt
                 },
                 {
                     'role': 'user',

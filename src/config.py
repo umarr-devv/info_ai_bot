@@ -18,6 +18,10 @@ class DBConfig(BaseModel):
     password: str
 
 
+class AiClientConfig(BaseModel):
+    token: str
+
+
 class LoggingConfig(BaseModel):
     level: str
 
@@ -25,6 +29,7 @@ class LoggingConfig(BaseModel):
 class Config(BaseModel):
     bot: BotConfig
     db: DBConfig
+    ai_client: AiClientConfig
     logging: LoggingConfig
 
     @classmethod
@@ -34,5 +39,6 @@ class Config(BaseModel):
         return Config(
             bot=BotConfig(**data['bot']),
             db=DBConfig(**data['db']),
+            ai_client=AiClientConfig(**data['ai_client']),
             logging=LoggingConfig(**data['logging'])
         )

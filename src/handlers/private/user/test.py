@@ -8,7 +8,7 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.utils.chat_action import ChatActionSender
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
-from service.ai_client import AiApiClient
+from src.service.ai_client import AiApiClient
 from src.repositories import AnswerRepository
 from src.repositories import ContentRepository, PromptRepository
 

@@ -6,7 +6,7 @@ from src.service.database import Base
 
 
 class Content(Base):
-    __tablename__ = 'users'
+    __tablename__ = 'contents'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, unique=True, nullable=False)

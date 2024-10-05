@@ -7,6 +7,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 from src.config import Config
 from src.handlers import router
+from src.service.ai_client import AiApiClient
 from src.service.database import DataBase
 from src.utils.commands import set_commands
 from src.utils.logs import set_logging
@@ -19,6 +20,7 @@ dp = Dispatcher(storage=MemoryStorage())
 database = DataBase(config)
 bot = Bot(token=config.bot.token,
           default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+ai_client = AiApiClient(config)
 
 
 async def main():
@@ -28,7 +30,10 @@ async def main():
     dp.include_router(router)
 
     try:
-        await dp.start_polling(bot, sessions=database.sessions, config=config)
+        await dp.start_polling(bot,
+                               sessions=database.sessions,
+                               config=config,
+                               ai_client=ai_client)
     finally:
         await bot.session.close()
         await dp.storage.close()

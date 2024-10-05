@@ -1,6 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.baked import Result
+from sqlalchemy.sql import func
 
 from src.models import Content
 
@@ -10,6 +11,13 @@ class ContentRepository:
     @staticmethod
     async def by_name(sessions: async_sessionmaker, name: str) -> Content:
         statement = select(Content).where(Content.name == name)
+        async with sessions() as session:
+            result: Result = await session.execute(statement)
+        return result.scalar()
+
+    @staticmethod
+    async def random(sessions: async_sessionmaker) -> Content:
+        statement = select(Content.content).order_by(func.random()).limit(1)
         async with sessions() as session:
             result: Result = await session.execute(statement)
         return result.scalar()

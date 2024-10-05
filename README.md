@@ -1,16 +1,17 @@
-# Шаблон для aiogram
+# Ai BOT
 
 ### Стек
 
 - Python
 - PostgresSQL
-- Docker
 
 ### Фреймворки и Библиотеки
 
 - aiogram - фреймворк для TelegramBotAPI
 - sqlalchemy (с asyncpg) - для асинхронного взаимодействия с БД
 - alembic - для миграций
+- openai - для запросов в GPT-4o
+- faiss, sentence-transformers - для реализации rag
 
 ***
 

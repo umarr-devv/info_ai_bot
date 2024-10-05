@@ -11,6 +11,5 @@ router.include_router(admin_router)
 router.include_router(user_router)
 
 router.message.filter(PrivateTypeFilter())
-router.callback_query.filter(PrivateTypeFilter())
 router.message.middleware(UserMiddleware())
 router.callback_query.middleware(UserMiddleware())

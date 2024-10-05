@@ -9,6 +9,7 @@ from aiogram.utils.chat_action import ChatActionSender
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from service.ai_client import AiApiClient
+from src.repositories import AnswerRepository
 from src.repositories import ContentRepository, PromptRepository
 
 router = Router()
@@ -72,17 +73,23 @@ async def on_question(callback: types.CallbackQuery,
     await callback.answer()
 
     data = await state.get_data()
-    data['score'] += 1 if callback.data == 'true' else 0
-    data['index'] -= 1
-    data['answers'].append({'question': callback.message.text, "answer": True if callback.data == 'true' else False})
-    await state.set_data(data)
 
     if data['index'] == 0:
         text = f'☑️ Тест окончен. <b>Вы</b> ответили' \
                f' на <code>{data["score"]}/5</code> вопросов правильно'
         await callback.message.edit_text(text=text, reply_markup=None)
+        await AnswerRepository.create(sessions,
+                                      user_id=callback.from_user.id,
+                                      answers=data['answers'],
+                                      score=data['score'])
         await state.clear()
         return
+
+    data['score'] += 1 if callback.data == 'true' else 0
+    data['index'] -= 1
+    data['answers'].append({'question': callback.message.text,
+                            "answer": True if callback.data == 'true' else False})
+    await state.set_data(data)
 
     async with ChatActionSender.typing(chat_id=callback.message.chat.id, bot=bot):
         text, keyboard = await create_message(sessions, ai_client)

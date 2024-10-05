@@ -8,7 +8,7 @@ async def set_commands(bot: Bot):
                 command='start', description='Запустить бота'
             ),
             types.BotCommand(
-                command='help', description='Помощь'
+                command='/test', description='Запустить тест'
             )
         ],
         scope=types.BotCommandScopeAllPrivateChats()

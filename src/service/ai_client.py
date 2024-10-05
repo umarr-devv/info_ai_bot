@@ -10,13 +10,13 @@ class AiApiClient:
             api_key=config.ai_client.token,
         )
 
-    async def completion(self, query: str, system_promt: str = '',
+    async def completion(self, query: str, system_propmt: str = '',
                          temperature: float = 0.7, max_tokens: int = 256) -> str:
         response = await self.client.chat.completions.create(
             messages=[
                 {
                     'role': 'system',
-                    'content': system_promt
+                    'content': system_propmt
                 },
                 {
                     'role': 'user',

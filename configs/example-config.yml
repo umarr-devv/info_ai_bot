@@ -6,5 +6,7 @@ db:
     host: ''
     user: ''
     password: ''
+ai_client:
+    token: ''
 logging:
     level: 'INFO'

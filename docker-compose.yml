@@ -2,8 +2,8 @@ version: '3'
 
 services:
   bot:
-    image: bot
-    container_name: bot
+    image: info_ai_bot
+    container_name: info_ai_bot
     depends_on:
       - db
     volumes:
@@ -25,7 +25,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
+      - 8080:9090
 
 volumes:
   dbdata: null

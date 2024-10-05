@@ -1,4 +1,4 @@
 FROM python:latest
-WORKDIR home/bot
-COPY . home/bot
-RUN pip install -r home/bot/requirements.txt
+WORKDIR home/info_ai_bot
+COPY . home/info_ai_bot
+RUN pip install -r home/info_ai_bot/requirements.txt

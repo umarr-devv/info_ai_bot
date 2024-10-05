@@ -6,7 +6,9 @@ from aiogram.filters import BaseFilter
 class ChatTypeFilter(BaseFilter):
     chat_types: list[str] = []
 
-    async def __call__(self, message: types.Message) -> bool:
+    async def __call__(self, message: types.Message | types.CallbackQuery) -> bool:
+        if isinstance(message, types.CallbackQuery):
+            message = message.message
         return message.chat.type in self.chat_types
 
 

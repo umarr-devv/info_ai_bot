@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  bot:
+    image: bot
+    container_name: bot
+    depends_on:
+      - db
+    volumes:
+      - .:/home/bot/
+    command: bash -c "cd /home/bot/
+      && alembic upgrade head
+      && python3 app.py"
+
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: t3FVG751#r
+    volumes:
+      - dbdata:/var/lib/postgresql/data/
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  dbdata: null

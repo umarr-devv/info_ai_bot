@@ -1,0 +1,10 @@
+bot:
+    token: ''
+    admin_id: 0
+db:
+    database: ''
+    host: ''
+    user: ''
+    password: ''
+logging:
+    level: 'INFO'

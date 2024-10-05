@@ -24,7 +24,7 @@ async def create_question(sessions: async_sessionmaker, ai_client: AiApiClient) 
     content = await ContentRepository.random(sessions)
     question = await ai_client.completion(query='',
                                           system_prompt=prompt.content.format(content),
-                                          temperature=1.0)
+                                          temperature=0.9)
     return question.split('|')
 
 
@@ -33,7 +33,7 @@ async def create_message(sessions: async_sessionmaker,
     question, answer, *wrong_answers = await create_question(sessions, ai_client)
 
     buttons = [types.InlineKeyboardButton(text=value, callback_data='false') for value in wrong_answers]
-    buttons.append(types.InlineKeyboardButton(text=answer, callback_data='true'))
+    buttons.append(types.InlineKeyboardButton(text=answer + '!', callback_data='true'))
     random.shuffle(buttons)
 
     text = f'<b>❓ Вопрос:</b>\n\n {question}'
@@ -74,6 +74,12 @@ async def on_question(callback: types.CallbackQuery,
 
     data = await state.get_data()
 
+    data['score'] += 1 if callback.data == 'true' else 0
+    data['index'] -= 1
+    data['answers'].append({'question': callback.message.text,
+                            "answer": True if callback.data == 'true' else False})
+    await state.set_data(data)
+
     if data['index'] == 0:
         text = f'☑️ Тест окончен. <b>Вы</b> ответили' \
                f' на <code>{data["score"]}/5</code> вопросов правильно'
@@ -84,12 +90,6 @@ async def on_question(callback: types.CallbackQuery,
                                       score=data['score'])
         await state.clear()
         return
-
-    data['score'] += 1 if callback.data == 'true' else 0
-    data['index'] -= 1
-    data['answers'].append({'question': callback.message.text,
-                            "answer": True if callback.data == 'true' else False})
-    await state.set_data(data)
 
     async with ChatActionSender.typing(chat_id=callback.message.chat.id, bot=bot):
         text, keyboard = await create_message(sessions, ai_client)

@@ -20,3 +20,9 @@ class ContentRepository:
         async with sessions() as session:
             result: Result = await session.execute(statement)
         return result.scalars().all()
+
+    async def all_content(sessions: async_sessionmaker) -> list[str]:
+        statement = select(Content.content).order_by(Content.id)
+        async with sessions() as session:
+            result: Result = await session.execute(statement)
+        return result.scalars().all()
